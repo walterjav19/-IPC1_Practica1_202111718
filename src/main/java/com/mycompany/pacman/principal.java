@@ -2,6 +2,7 @@
 
 package com.mycompany.pacman;
 
+import java.util.Random;
 import java.util.Scanner;
 
 
@@ -41,9 +42,16 @@ public class principal {
         
     }
     
+    
+    //datos para el historial
     public static String nombre="";
-    public static int puntos=0;
-    public static int premios,paredes,trampas;
+    String nombres[] = new String[10];
+    public static int punto=0;
+    int punteos[] = new int[10];
+    //datos para el tablero
+    public static int premios,paredes,trampas,x,y;
+    public static int vidas=3;
+    
     public static void juego(){
         
         String tamaño,tamañon;
@@ -94,17 +102,20 @@ public class principal {
         }while(trampas>20);
         
         
+        
+        
+        
+        
+        
        switch(tamaño.toLowerCase()){
             case "g":
-                System.out.println("TABLERO GRANDE");
-                System.out.println("Nombre: "+nombre);
-                System.out.println("Puntos: "+puntos);
+                System.out.println("---TABLERO GRANDE---");
+
                 tablerogrande();
             break; 
             case "p":
-                System.out.println("TABLERO PEQUEÑO");
-                System.out.println("Nombre: "+nombre);
-                System.out.println("Puntos: "+puntos);
+                System.out.println("---TABLERO PEQUEÑO---");
+                           
                 tableropequenio();
             break; 
         }
@@ -115,15 +126,14 @@ public class principal {
     }
     
     static void historial(){
-        System.out.println("=======HISTORIAL DE PARTIDAS======="); 
-        System.out.println("1. "+nombre); 
+        System.out.println("=======HISTORIAL DE PARTIDAS=======");
           
     }
     
    
     
     public static void tablerogrande(){
-       
+            Scanner teclado= new Scanner(System.in);
             int alto, ancho;
             ancho=12;
             alto=12;
@@ -155,7 +165,8 @@ public class principal {
                         }else if(obstaculos2 == i){
                             System.out.print("x  ");
                         }else{
-                            System.out.print("   ");
+                            System.out.print("  "
+                                    + " ");
                         }
                     }
 
@@ -166,45 +177,81 @@ public class principal {
     
     
     
+            
     
-    public static void tableropequenio(){
-    int tablerop[][]= new int[7][8];
+    public static void tableropequenio(){ 
+    
+    int alto, ancho,x,y;
+    Scanner teclado= new Scanner(System.in);
+    System.out.println("===Ingrese posicion Inicial===");
+    
+    do{
+        System.out.println("Ingrese Columna:");
+        x=teclado.nextInt();
+        if(trampas>6){
+            System.out.println("Ingrese una fila del 1 al 6");
+        }
+        }while(trampas>6);
     
     
-    for (int i = 0; i < 7; i++) {
-                for (int j = 0; j < 8; j++) {
+    do{
+        System.out.println("Ingrese fila:");
+        y=teclado.nextInt();
+        if(trampas>5){
+            System.out.println("Ingrese una fila del 1 al 5");
+        }
+        }while(trampas>5);
+    
+     ancho=6;
+     alto=7;
+        
+        String IZQUIERDA = " < ";
+        String DERECHA = " > ";
+        String ARRIBA = " ^ ";
+        String ABAJO = " V ";     
+            
+            
+       
+        boolean tablero [][] = new boolean[ancho][alto];
 
-                    int obstaculos1 = (int)(Math.random()*(4)+1);
-                    int obstaculos2 = (int)(Math.random()*(4)+1);
+        for (int i = 0; i < alto; i++) {
+                for (int j = 0; j < ancho; j++) {
 
-                    if (i == 0 || i == 6){
+                    
+                    
+                    int item1 = (int)(Math.random()*(ancho-3)+1);
+                    int item2 = (int)(Math.random()*(ancho-3)+1);
+
+                    if (i == 0 || i == alto-1){
                         System.out.print("---");
+                        
                    
 
-                    } else if(j == 0 || j == 7){
+                    } else if(j == 0 || j == ancho-1){
 
                         System.out.print("|    ");
 
                     }else{
           
-                        if(obstaculos1 == i && obstaculos2 == j){
+                        if(item1 == i && item2 == j){
                             System.out.print("@  ");
-                        }else if(obstaculos2 == i && obstaculos1 == j){
+                        }else if(item2 == i && item1 == j){
                             System.out.print("0  ");
-                        }else if(obstaculos1>= j && obstaculos1<= j){
+                        }else if(item1>= j && item1<= j){
                             System.out.print("$  ");
-                        }else if(obstaculos2 == i){
+                        }else if(item2 == i){
                             System.out.print("x  ");
+                        }else if(j == x && i == y){
+                          System.out.println(">  ");  
                         }else{
-                            System.out.print("   ");
+                            System.out.print("  "
+                                    + " ");
                         }
                     }
 
                 }
                 System.out.println("");
             }
-    
-    
     
     }
     
