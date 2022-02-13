@@ -12,7 +12,7 @@ import java.util.Scanner;
  */
 public class juegocompleto {
     
-    //datos para el historial
+    //datos para el historial e info arriba del tablero
     String nombre;
     String nombres[] = new String[10];
     int punto;
@@ -23,8 +23,17 @@ public class juegocompleto {
     //datos para el tablero
     int premios,paredes,trampas,x,y;
     
+    
+    //tablero y movimiento
+    public String tablerog[][] = new String[10][10];
+    public String tablerop[][] = new String[6][5];
+    String marcop[][]=new String[5][6];
+    String marcog[][]=new String[10][10];
+    String tamaño,tamañon;
+ 
+   
      //lector de datos
-     Scanner teclado= new Scanner(System.in);
+   Scanner teclado= new Scanner(System.in);
     
     public void inicio(){
         
@@ -51,7 +60,7 @@ public class juegocompleto {
                     System.out.print("\tUSUARIO");
                     System.out.println("\tPUNTEO");
                     for (int i = 0; i < nombres.length; i++) {
-                        if (nombres[i] != null) {
+                        if (nombres[i] != null) {// si detecta el almacenamiento de la variable se imprime
                             System.out.print(i+1);
                             System.out.print("\t" + nombres[i]);
                             System.out.print("\t" + puntos[i]);
@@ -83,7 +92,7 @@ public class juegocompleto {
             puntos[0] = punto;
         } else {
             for (int i = 0; i < nombres.length; i++) {
-                if (nombres[i] == null) {//la variable debe tener almacenado un nombre
+                if (nombres[i] == null) {//el arreglo en un inicio no debe tener almacenado un nombre debe estar vacia o null " "
                     nombres[i] = nombre;
                     puntos[i] = punto;
                     break;
@@ -96,8 +105,7 @@ public class juegocompleto {
     
     public void juego(){
         
-        String tamaño="";
-        String tamañon;
+        
         System.out.println("Ingrese su nombre:");
         nombre=teclado.next();
         System.out.println("=======INGRESE DIMENSIONES DEL TABLERO=======");
@@ -133,6 +141,30 @@ public class juegocompleto {
     }
     
     
+    public void Tableros() {
+
+        if (tamañon.equalsIgnoreCase("p")) { 
+            System.out.println("Usuario: " + nombre );
+            System.out.println("Punteo: " + punto );
+            System.out.println("Vidas: " + vidas );
+             
+            for (int i = 0; i < marcop.length; i++) {
+                System.out.print("|");
+                for (int j = 0; j < marcop[0].length; j++) {
+
+                    System.out.printf("%2s", marcop[i][j]);
+
+                }
+                System.out.print("|");
+                System.out.println("");
+            }
+            System.out.println("-------------");
+        } else {     
+            
+
+        }
+
+    }
     
      
     
@@ -167,48 +199,56 @@ public class juegocompleto {
         }while(trampas>20);
         
         
-            int alto, ancho;
-            ancho=12;
-            alto=12;
+        System.out.println("===Ingrese posicion Inicial===");
+    
+    do{
+        System.out.println("Ingrese Columna:");
+        x=teclado.nextInt();
+        if(x>10){
+            System.out.println("Ingrese una fila del 1 al 10");
+        }
+        }while(x>10);
+    
+    
+    do{
+        System.out.println("Ingrese fila:");
+        y=teclado.nextInt();
+        if(y>10){
+            System.out.println("Ingrese una fila del 1 al 10");
+        }
+        }while(y>10);
         
-        boolean tablerog [][] = new boolean[ancho][alto];
+       for (int i = 0; i < marcog.length; i++) {
+                for (int j = 0; j < marcog[0].length; j++) {
+                    if (marcog[i][j] == null) {
+                        marcog[i][j] = " ";
+                    } 
+                }
+    }
+       
+       
+            System.out.println("Usuario: " + nombre );
+            System.out.println("Punteo: " + punto );
+            System.out.println("Vidas: " + vidas );
+            System.out.println("----------------------");
+            for (int i = 0; i < marcog.length; i++) {
+                System.out.print("|");
+                for (int j = 0; j < marcog[0].length; j++) {
 
-        for (int i = 0; i < alto; i++) {
-                for (int j = 0; j < ancho; j++) {
-
-                    int obstaculos1 = (int)(Math.random()*(ancho-3)+1);
-                    int obstaculos2 = (int)(Math.random()*(ancho-3)+1);
-
-                    if (i == 0 || i == alto-1){
-                        System.out.print("---");
-                   
-
-                    } else if(j == 0 || j == ancho - 1){
-
-                        System.out.print("|    ");
-
-                    }else{
-          
-                        if(obstaculos1 == i && obstaculos2 == j){
-                            System.out.print("@  ");
-                        }else if(obstaculos2 == i && obstaculos1 == j){
-                            System.out.print("0  ");
-                        }else if(obstaculos1>= j && obstaculos1<= j){
-                            System.out.print("$  ");
-                        }else if(obstaculos2 == i){
-                            System.out.print("x  ");
-                        }else{
-                            System.out.print("  "
-                                    + " ");
-                        }
-                    }
+                    System.out.printf("%2s",marcog[i][j]);
 
                 }
+                System.out.print("|");
                 System.out.println("");
             }
-        
-        historialfp();
+            System.out.println("----------------------");
+ 
+       
+       
+       
+      historialfp();  
     }
+    
     
     
     
@@ -243,15 +283,16 @@ public class juegocompleto {
         }
         }while(trampas>6);    
     
-    int alto, ancho,x,y;
-    Scanner teclado= new Scanner(System.in);
+ 
+    
+    
     System.out.println("===Ingrese posicion Inicial===");
     
     do{
         System.out.println("Ingrese Columna:");
         x=teclado.nextInt();
         if(trampas>6){
-            System.out.println("Ingrese una fila del 1 al 6");
+        System.out.println("Ingrese una fila del 1 al 6");
         }
         }while(trampas>6);
     
@@ -264,56 +305,32 @@ public class juegocompleto {
         }
         }while(trampas>5);
     
-     ancho=6;
-     alto=7;
-        
-        String IZQUIERDA = " < ";
-        String DERECHA = " > ";
-        String ARRIBA = " ^ ";
-        String ABAJO = " V ";     
-            
-            
+     
+    for (int i = 0; i < marcop.length; i++) {
+                for (int j = 0; j < marcop[0].length; j++) {
+                    if (marcop[i][j] == null) {
+                        marcop[i][j] = " ";
+                    } 
+                }
+    }
        
-        boolean tablero [][] = new boolean[ancho][alto];
+       
+            System.out.println("Usuario: " + nombre );
+            System.out.println("Punteo: " + punto );
+            System.out.println("Vidas: " + vidas );
+            System.out.println("--------------");
+            for (int i = 0; i < marcop.length; i++) {
+                System.out.print("|");
+                for (int j = 0; j < marcop[0].length; j++) {
 
-        for (int i = 0; i < alto; i++) {
-                for (int j = 0; j < ancho; j++) {
-
-                    
-                    
-                    int item1 = (int)(Math.random()*(ancho-3)+1);
-                    int item2 = (int)(Math.random()*(ancho-3)+1);
-
-                    if (i == 0 || i == alto-1){
-                        System.out.print("---");
-                        
-                   
-
-                    } else if(j == 0 || j == ancho-1){
-
-                        System.out.print("|    ");
-
-                    }else{
-          
-                        if(item1 == i && item2 == j){
-                            System.out.print("@  ");
-                        }else if(item2 == i && item1 == j){
-                            System.out.print("0  ");
-                        }else if(item1>= j && item1<= j){
-                            System.out.print("$  ");
-                        }else if(item2 == i){
-                            System.out.print("x  ");
-                        }else if(j == x && i == y){
-                          System.out.println(">  ");  
-                        }else{
-                            System.out.print("  "
-                                    + " ");
-                        }
-                    }
+                    System.out.printf("%2s",marcop[i][j]);
 
                 }
+                System.out.print("|");
                 System.out.println("");
             }
+            System.out.println("--------------");
+
     historialfp();
     }
 }
