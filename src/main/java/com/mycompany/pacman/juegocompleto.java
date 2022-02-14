@@ -4,6 +4,7 @@
  */
 package com.mycompany.pacman;
 
+import java.util.Random;
 import java.util.Scanner;
 
 /**
@@ -22,15 +23,15 @@ public class juegocompleto {
 
     //datos para el tablero
     int premios,paredes,trampas,x,y;
+    Random random = new Random();
     
-    
-    //tablero y movimiento
-    public String tablerog[][] = new String[10][10];
-    public String tablerop[][] = new String[6][5];
+    //tablero,bordes y movimiento
+    public int tablerog[][];
+    public int tablerop[][];
     String marcop[][]=new String[5][6];
     String marcog[][]=new String[10][10];
     String tamaño,tamañon;
- 
+    
    
      //lector de datos
    Scanner teclado= new Scanner(System.in);
@@ -83,9 +84,9 @@ public class juegocompleto {
     }
     
     
-    public void historialfp() {
+    public void historialfp() {//capturar el nombre e insertarlo en una matriz tamaño n
 
-        partidas = partidas + 1;
+        partidas = partidas + 1;//identificamos los datos de que partida capturar
 
         if (partidas == 1) {
             nombres[0] = nombre;
@@ -119,12 +120,12 @@ public class juegocompleto {
                  if(!(tamañon.equals("g") || tamañon.equals("p"))){
                      System.out.println("Ingrese valores p o g(pequeño o grande)");
                  } 
-            }while (!(tamañon.equals("g") || tamañon.equals("p")));
+            }while (!(tamañon.equals("g") || tamañon.equals("p")));//usar sintaxis recomendada
         
       
             
        
-       switch(tamaño.toLowerCase()){
+       switch(tamaño.toLowerCase()){//funcion para minusculas lower minusculas upper may
             case "g":
                 System.out.println("---TABLERO GRANDE---");
                 tablerogrande();
@@ -141,30 +142,6 @@ public class juegocompleto {
     }
     
     
-    public void Tableros() {
-
-        if (tamañon.equalsIgnoreCase("p")) { 
-            System.out.println("Usuario: " + nombre );
-            System.out.println("Punteo: " + punto );
-            System.out.println("Vidas: " + vidas );
-             
-            for (int i = 0; i < marcop.length; i++) {
-                System.out.print("|");
-                for (int j = 0; j < marcop[0].length; j++) {
-
-                    System.out.printf("%2s", marcop[i][j]);
-
-                }
-                System.out.print("|");
-                System.out.println("");
-            }
-            System.out.println("-------------");
-        } else {     
-            
-
-        }
-
-    }
     
      
     
@@ -217,7 +194,12 @@ public class juegocompleto {
             System.out.println("Ingrese una fila del 1 al 10");
         }
         }while(y>10);
-        
+       
+    
+    x=x-1;// matriz inicia en 0 como pos 1 
+    y=y-1;
+    marcog[x][y] = "<";
+    
        for (int i = 0; i < marcog.length; i++) {
                 for (int j = 0; j < marcog[0].length; j++) {
                     if (marcog[i][j] == null) {
@@ -226,7 +208,7 @@ public class juegocompleto {
                 }
     }
        
-       
+ 
             System.out.println("Usuario: " + nombre );
             System.out.println("Punteo: " + punto );
             System.out.println("Vidas: " + vidas );
@@ -235,7 +217,23 @@ public class juegocompleto {
                 System.out.print("|");
                 for (int j = 0; j < marcog[0].length; j++) {
 
-                    System.out.printf("%2s",marcog[i][j]);
+                    System.out.printf(marcog[i][j]);
+                    
+                    int items1 = (int)(Math.random()*(premios));
+                    int items2 = (int)(Math.random()*(trampas));
+                    if(items1 == i && items2 == j){
+                            System.out.print("$");
+                        }else if(items2 == i && items1 == j){
+                            System.out.print("0");
+                        }else if(items1>= j && items1<= j){
+                            System.out.print("@");
+                        }else if(items2 == i){
+                            System.out.print("X");
+                        }else{
+                            System.out.print(" ");
+                        }
+                    
+                    
 
                 }
                 System.out.print("|");
@@ -246,7 +244,7 @@ public class juegocompleto {
        
        
        
-      historialfp();  
+      historialfp();//capturamos los datos finales de la partida  
     }
     
     
@@ -305,7 +303,11 @@ public class juegocompleto {
         }
         }while(trampas>5);
     
-     
+    
+    x=x-1;
+    y=y-1;
+    marcop[x][y] = "<";
+    
     for (int i = 0; i < marcop.length; i++) {
                 for (int j = 0; j < marcop[0].length; j++) {
                     if (marcop[i][j] == null) {
@@ -313,8 +315,50 @@ public class juegocompleto {
                     } 
                 }
     }
+
+    
+        int c = 1;
+        tablerop = new int[5][6];
+        for (int i = 0; i < tablerop.length; i++) {
+            for (int j = 0; j < tablerop[0].length; j++) {
+                tablerop[i][j] = c++;
+            }
+        }
        
-       
+        
+        for (int p = 0; p < premios; p++) {
+                Random random = new Random();
+                int nr = random.nextInt(30);
+                int rellenon = 0;
+                String rellenotxt = null;
+
+                for (int i = 0; i < tablerop.length; i++) {
+                    for (int j = 0; j < tablerop[0].length; j++) {
+                        if (nr == tablerop[i][j] && marcop[i][j] == null) {
+                            rellenon = tablerop[i][j];
+                            rellenotxt = marcop[i][j];
+                
+                            if (nr % 2 == 0) {
+                                marcop[i][j] = "0";
+                            } else {
+                                marcop[i][j] = "$";
+                            }
+                            break;
+                        } else if (nr == tablerop[i][j] && marcop[i][j] != null) {
+                            rellenon = tablerop[i][j];
+                            rellenotxt = marcop[i][j];
+                            break;
+                        }
+                    }
+                    if (nr == rellenon && rellenotxt == null) {
+                        break;
+                    } else if (nr == rellenon && rellenotxt != null) {
+                        p--; 
+                        break;
+                    }
+                }
+            }
+    
             System.out.println("Usuario: " + nombre );
             System.out.println("Punteo: " + punto );
             System.out.println("Vidas: " + vidas );
@@ -323,14 +367,29 @@ public class juegocompleto {
                 System.out.print("|");
                 for (int j = 0; j < marcop[0].length; j++) {
 
-                    System.out.printf("%2s",marcop[i][j]);
+                    System.out.printf(marcop[i][j]);
+                    
+                    int items1 = (int)(Math.random()*(premios));
+                    int items2 = (int)(Math.random()*(trampas));
+                    if(items1 == i && items2 == j){
+                            System.out.print("$");
+                        }else if(items2 == i && items1 == j){
+                            System.out.print("0");
+                        }else if(items1>= j && items1<= j){
+                            System.out.print("@");
+                        }else if(items2 == i){
+                            System.out.print("X");
+                        }else{
+                            System.out.print(" ");
+                        }
+                    
 
                 }
                 System.out.print("|");
                 System.out.println("");
             }
             System.out.println("--------------");
-
-    historialfp();
+    
+    historialfp();//capturamos los datos finales de la partida
     }
 }
